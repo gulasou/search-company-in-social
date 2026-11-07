@@ -108,29 +108,32 @@ class Bilibili:
 class Douyin:
     def __enter__(self):
         self.playwright = sync_playwright().start()
-        self.browser = None
+        self.context = None
         try:
-            self.browser = self.playwright.chromium.launch(channel="msedge", headless=False)
-            self.page = self.browser.new_page(viewport={"width": 1280, "height": 900})
+            self.context = self.playwright.chromium.launch_persistent_context(
+                user_data_dir=str(ROOT / ".local" / "douyin-browser"), channel="msedge", headless=False, chromium_sandbox=True,
+                viewport={"width": 1280, "height": 900})
+            self.page = self.context.pages[0] if self.context.pages else self.context.new_page()
         except BrowserError:
             self.__exit__(None, None, None)
-            raise PlatformError("无法打开抖音搜索窗口，请确认已安装 Edge，并从普通本机终端启动服务。", True) from None
+            raise PlatformError("无法打开抖音搜索窗口，请关闭上次未退出的本程序抖音窗口，并确认已安装 Edge、从普通本机终端启动服务。", True) from None
         return self
 
     def __exit__(self, *args):
         try:
-            if self.browser:
-                self.browser.close()
+            if self.context:
+                self.context.close()
         finally:
             self.playwright.stop()
 
-    def read_page(self, url, paths, parameter, value, field, timeout=30000):
+    def read_page(self, url, paths, parameter, value, field, timeout=120000):
         responses = []
 
         def receive(response):
             address = urlsplit(response.url)
+            host = address.hostname or ""
             params = parse_qs(address.query)
-            if (address.hostname == "www.douyin.com" and address.path in paths
+            if ((host == "douyin.com" or host.endswith(".douyin.com")) and address.path in paths
                     and params.get(parameter) == [str(value)]
                     and params.get("offset", ["0"]) == ["0"]
                     and params.get("cursor", ["0"]) == ["0"]):
@@ -140,15 +143,15 @@ class Douyin:
         try:
             self.page.goto(url, wait_until="domcontentloaded", timeout=30000)
             deadline = time.monotonic() + timeout / 1000
-            while not responses and time.monotonic() < deadline:
+            while (not responses or self.page.locator("#login-panel-new").is_visible()) and time.monotonic() < deadline:
                 if self.page.is_closed():
                     raise PlatformError("抖音搜索窗口已关闭，本次采集停止。", True)
-                if "验证" in self.page.title():
-                    raise PlatformError("抖音要求安全验证，本次采集已停止；请在官网确认后重试。", True)
+                if self.page.locator("#login-panel-new").is_visible():
+                    responses.clear()
                 self.page.wait_for_timeout(250)
-            if not responses:
-                raise PlatformError("抖音未返回可用数据；可能需要登录、验证或已限制访问。本次采集已停止，请稍后重试。", True)
-            response = responses[0]
+            if not responses or self.page.locator("#login-panel-new").is_visible():
+                raise PlatformError("抖音等待超时，未返回可用数据，本次采集已停止。请重新搜索，并在弹出的抖音窗口中完成登录或安全验证；如仍失败，可能是平台限制了访问。", True)
+            response = responses[-1]
             if response.status in {401, 403, 412, 429}:
                 raise PlatformError("抖音要求登录、验证或限制了访问，本次采集已停止。", True)
             if not response.ok:

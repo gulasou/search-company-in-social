@@ -141,7 +141,7 @@
   $('platform').addEventListener('change', () => {
     document.querySelector('.account').hidden = $('platform').value !== 'bilibili';
     $('search-hint').textContent = $('platform').value === 'douyin'
-      ? '搜索将打开独立的抖音官网窗口，需要时请在窗口中登录（最多等待 2 分钟）。本次搜索结束后关闭，不保存登录态。每个视频最多读取 10 条公开一级评论。'
+      ? '搜索将打开抖音专用窗口，并复用本机保存的登录态；首次使用或登录失效时，请在该窗口中完成登录或安全验证（每页最多等待 2 分钟）。每个视频最多读取 10 条公开一级评论。'
       : '每个视频最多读取 10 条热门一级评论；首次搜索可能需要约 10–60 秒。';
   });
   function node(tag, text, className) {
@@ -198,7 +198,7 @@
     $('status').hidden = false;
     $('status').className = 'notice';
     $('status').textContent = $('platform').value === 'douyin'
-      ? '正在打开抖音官网搜索窗口，需要时请在该窗口中登录（最多等待 2 分钟）。请保持窗口打开，搜索与评论读取完成后会自动关闭。'
+      ? '正在打开抖音官网搜索窗口并复用已保存的登录态。需要时请在该窗口完成登录或安全验证（每页最多等待 2 分钟）；登录弹窗关闭后继续读取结果，采集结束后关闭窗口并保留本机登录状态。'
       : '正在搜索相关视频并读取公开评论，请稍候。平台响应较慢时可能超过一分钟。';
     $('welcome').hidden = true;
     $('results').hidden = true;

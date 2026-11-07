@@ -170,7 +170,7 @@ class BilibiliLogin:
             except ImportError:
                 raise LoginError("请先按使用说明安装依赖，并使用 .venv 中的 Python 启动服务。") from None
             with sync_playwright() as playwright:
-                browser = playwright.chromium.launch(channel="msedge", headless=False)
+                browser = playwright.chromium.launch(channel="msedge", headless=False, chromium_sandbox=True)
                 try:
                     page = browser.new_page()
                     page.goto("https://passport.bilibili.com/login", wait_until="domcontentloaded", timeout=30000)
