@@ -1,0 +1,7 @@
+__pycache__/
+.venv/
+.env
+.local/
+*.log
+test-results/*
+!test-results/verify-douyin-flow.py

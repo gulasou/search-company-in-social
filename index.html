@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eye of Truth · 公司求职口碑</title>
+  <style>
+    :root { color-scheme: light; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; color: #172b2a; background: #f5f7f4; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { width: min(1080px, calc(100% - 40px)); margin: 0 auto 64px; }
+    header { border-bottom: 1px solid #dce4de; padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
+    .brand { font-weight: 750; letter-spacing: -.5px; font-size: 19px; }
+    .brand span { color: #27806a; }
+    .account { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 22px; padding: 16px 20px; background: #e9f0e9; border-radius: 12px; }
+    .account p { margin: 5px 0 0; font-size: 12px; color: #52675a; }
+    .account strong { font-size: 14px; }
+    .account-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .account-actions button { padding: 10px 14px; }
+    .badge, .pill { background: #e4eee7; border-radius: 30px; padding: 6px 12px; font-size: 12px; color: #38594a; }
+    .hero { padding: 55px 0 28px; }
+    .eyebrow { color: #37765e; font-size: 12px; letter-spacing: 2px; font-weight: bold; }
+    h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.3; letter-spacing: -1px; margin: 14px 0; }
+    p { line-height: 1.8; }
+    .muted { color: #64736c; font-size: 14px; }
+    form, .welcome, .video { background: #fff; border: 1px solid #dde5df; border-radius: 16px; }
+    form { padding: 24px; box-shadow: 0 8px 28px #203c2910; }
+    .fields { display: grid; grid-template-columns: 1fr 125px 190px 125px; gap: 14px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 9px; }
+    input, select, button { font: inherit; font-size: 14px; border-radius: 8px; }
+    input, select { width: 100%; height: 46px; border: 1px solid #cdd8cf; background: #fcfdfb; padding: 0 12px; color: inherit; }
+    input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid #98c8b3; outline-offset: 3px; }
+    button { cursor: pointer; border: 0; padding: 12px 20px; background: #216b53; color: white; font-weight: 600; }
+    button:disabled { opacity: .6; cursor: wait; }
+    .form-bottom, .results-head, .meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .form-bottom { margin-top: 18px; }
+    .form-bottom p { margin: 0; font-size: 12px; }
+    .welcome { margin-top: 28px; padding: 28px; }
+    h2 { font-size: 20px; margin: 0 0 8px; }
+    h3 { font-size: 18px; margin: 12px 0; line-height: 1.6; }
+    .welcome p { margin: 6px 0; }
+    .notice { padding: 14px 18px; margin-top: 20px; border-radius: 10px; background: #e6eee8; white-space: pre-line; line-height: 1.7; font-size: 14px; }
+    .notice.error { background: #fff0e9; color: #924724; }
+    .results-head { margin: 32px 0 18px; }
+    .results-head p { margin: 6px 0 0; }
+    .secondary { color: #216b53; background: #e2eee6; flex-shrink: 0; }
+    .video { padding: 24px; margin: 16px 0; }
+    a { color: #216b53; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    h3 a { color: #172b2a; text-decoration: none; }
+    h3 a:hover { text-decoration: underline; }
+    .meta { justify-content: flex-start; flex-wrap: wrap; font-size: 12px; color: #64736c; }
+    .description { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; max-height: 105px; overflow: auto; margin: 12px 0 18px; }
+    .comment { border-top: 1px solid #edf0ec; padding: 16px 0 4px; }
+    .comment p { margin: 0 0 10px; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; }
+    .comment .meta { justify-content: space-between; }
+    .comment-label { font-size: 12px; color: #64736c; padding: 12px 0; }
+    footer { border-top: 1px solid #dce4de; padding-top: 18px; margin-top: 32px; font-size: 12px; color: #64736c; line-height: 1.8; }
+    [hidden] { display: none !important; }
+    @media (max-width: 680px) { main { width: calc(100% - 28px); } .hero { padding-top: 36px; } .fields { grid-template-columns: 1fr 1fr; } .company-field { grid-column: 1 / -1; } form, .video { padding: 18px; } .form-bottom { align-items: flex-start; flex-direction: column; } .form-bottom button { width: 100%; } header .badge { font-size: 11px; } .results-head { align-items: flex-start; } }
+    @media (max-width: 680px) { .account { align-items: flex-start; flex-direction: column; padding: 16px; } .account-actions { flex-wrap: wrap; } }
+  </style>
+</head>
+<body>
+<main>
+  <header><div class="brand">Eye of <span>Truth.</span></div><span class="badge">B站 / 抖音 · 求职口碑检索</span></header>
+  <section class="account" aria-label="B站账号登录">
+    <div role="status" aria-live="polite"><strong id="login-title">正在检查本机登录态…</strong><p id="login-message">账号密码无需交给本应用，扫码确认在 B站官网完成。</p></div>
+    <div class="account-actions"><button id="login-start" type="button">登录 B站</button><button id="login-cancel" class="secondary" type="button" hidden>取消登录</button><button id="login-clear" class="secondary" type="button" hidden>清除本机登录态</button></div>
+  </section>
+  <section class="hero">
+    <div class="eyebrow">多看一些经历，再做一个决定</div>
+    <h1>入职之前，听听大家怎么说。</h1>
+    <p class="muted">输入公司名，查看 B站或抖音上的求职相关视频与公开评论，找到可以追溯的公开线索。</p>
+  </section>
+  <form id="search-form">
+    <div class="fields">
+      <div class="company-field"><label for="company">公司名称</label><input id="company" name="company" placeholder="例如：华为、腾讯、比亚迪" minlength="2" maxlength="80" required autocomplete="organization"></div>
+      <div><label for="platform">搜索平台</label><select id="platform"><option value="bilibili">B站</option><option value="douyin">抖音</option></select></div>
+      <div><label for="topic">关注话题</label><select id="topic"><option value="all">全部求职话题</option><option value="salary">薪资待遇</option><option value="overtime">加班情况</option><option value="interview">面试经历</option><option value="experience">入职体验</option></select></div>
+      <div><label for="limit">最多视频数</label><select id="limit"><option value="3">3 个</option><option value="6" selected>6 个</option><option value="8">8 个</option></select></div>
+    </div>
+    <div class="form-bottom"><p id="search-hint" class="muted">每个视频最多读取 10 条热门一级评论；首次搜索可能需要约 10–60 秒。</p><button id="search" type="submit">搜索公司口碑 ↗</button></div>
+  </form>
+  <div id="status" class="notice" role="status" aria-live="polite" hidden></div>
+  <section id="welcome" class="welcome"><h2>从具体经历里，找到值得追问的问题</h2><p class="muted">关注待遇、加班、面试和入职体验。每条结果都附有原始链接，方便你查看完整语境。</p><p class="muted">仅展示本次实际获取的数据，不生成公司评分。评论属于网友观点，不代表已经核实的事实。</p></section>
+  <section id="results" aria-label="检索结果" hidden>
+    <div class="results-head"><div><h2 id="result-title"></h2><p id="summary" class="muted"></p></div><button id="download" class="secondary" type="button">导出 JSON</button></div>
+    <div id="warnings" class="notice error" role="status" hidden></div>
+    <div id="videos"></div>
+  </section>
+  <footer>数据范围：B站或抖音搜索结果与公开一级评论的有限样本，未覆盖视频语音、字幕、弹幕和楼中楼。公司简称可能存在同名或错配，请结合原视频核对公司主体、岗位和时间。</footer>
+</main>
+<script>
+  const $ = id => document.getElementById(id);
+  let result = null;
+  let loginTimer;
+  let loginRequest = 0;
+  function showLogin(data) {
+    const active = ['starting', 'waiting', 'cancelling'].includes(data.state);
+    const titles = { logged_out: '未登录 B站', saved: '已保存本机登录态', authenticated: '已登录 B站', starting: '正在打开登录窗口', waiting: '等待扫码确认', cancelling: '正在取消登录', error: '登录未完成' };
+    $('login-title').textContent = `${titles[data.state] || '登录状态未知'}${data.username ? ` · ${data.username}` : ''}`;
+    $('login-message').textContent = data.message;
+    $('login-start').textContent = data.has_session ? '重新登录' : '登录 B站';
+    $('login-start').disabled = active;
+    $('login-cancel').hidden = !active;
+    $('login-cancel').disabled = data.state === 'cancelling';
+    $('login-clear').hidden = !data.has_session;
+    clearTimeout(loginTimer);
+    if (active) loginTimer = setTimeout(() => refreshLogin(), 1500);
+  }
+  async function refreshLogin(action) {
+    const requestId = ++loginRequest;
+    clearTimeout(loginTimer);
+    if (action) {
+      $('login-start').disabled = true;
+      $('login-cancel').disabled = true;
+      $('login-clear').disabled = true;
+    }
+    try {
+      const response = await fetch(`/api/login/${action || 'status'}`, action ? {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}'
+      } : undefined);
+      const data = await response.json();
+      if (requestId !== loginRequest) return;
+      if (!response.ok) throw new Error(data.error || '无法读取登录状态，请重试。');
+      showLogin(data);
+    } catch (error) {
+      if (requestId !== loginRequest) return;
+      $('login-title').textContent = '无法更新登录状态';
+      $('login-message').textContent = error.message;
+      $('login-start').disabled = false;
+      $('login-cancel').disabled = false;
+    } finally {
+      if (requestId === loginRequest) $('login-clear').disabled = false;
+    }
+  }
+  $('login-start').addEventListener('click', () => refreshLogin('start'));
+  $('login-cancel').addEventListener('click', () => refreshLogin('cancel'));
+  $('login-clear').addEventListener('click', () => refreshLogin('clear'));
+  refreshLogin();
+  $('platform').addEventListener('change', () => {
+    document.querySelector('.account').hidden = $('platform').value !== 'bilibili';
+    $('search-hint').textContent = $('platform').value === 'douyin'
+      ? '搜索将打开独立的抖音官网窗口，需要时请在窗口中登录（最多等待 2 分钟）。本次搜索结束后关闭，不保存登录态。每个视频最多读取 10 条公开一级评论。'
+      : '每个视频最多读取 10 条热门一级评论；首次搜索可能需要约 10–60 秒。';
+  });
+  function node(tag, text, className) {
+    const el = document.createElement(tag);
+    if (text !== undefined) el.textContent = text;
+    if (className) el.className = className;
+    return el;
+  }
+  function link(text, url) {
+    const el = node('a', text);
+    el.href = url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    return el;
+  }
+  function date(value) {
+    if (!value) return '时间未知';
+    const d = new Date(typeof value === 'number' ? value * 1000 : value);
+    return Number.isNaN(d.getTime()) ? '时间未知' : d.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' });
+  }
+  function render(data) {
+    const count = data.videos.reduce((n, video) => n + video.comments.length, 0);
+    $('result-title').textContent = `${data.company} · 求职口碑线索`;
+    $('summary').textContent = `${data.platform} · ${data.videos.length} 个视频 · ${count} 条评论 · 采集于 ${date(data.fetched_at)}`;
+    $('warnings').textContent = data.warnings.join('\n');
+    $('warnings').hidden = !data.warnings.length;
+    $('videos').replaceChildren();
+    if (!data.videos.length) $('videos').append(node('p', '本次没有找到标题或简介包含该公司名的视频。可尝试公司常用简称或其他话题；这不代表该公司没有相关评价。', 'notice'));
+    for (const video of data.videos) {
+      const card = node('article', undefined, 'video');
+      card.append(node('span', `${data.platform} · 视频线索`, 'pill'));
+      const heading = node('h3');
+      heading.append(link(video.title, video.url));
+      card.append(heading, node('div', `${video.author} · ${date(video.published_at)} · ${video.views == null ? '播放量未公开' : `${video.views} 次播放`}`, 'meta'));
+      if (video.description) card.append(node('p', video.description, 'description muted'));
+      card.append(node('div', `本次读取 ${video.comments.length} 条${data.platform === '抖音' ? '公开' : '热门'}一级评论 · 评论可能依据视频语境讨论公司`, 'comment-label'));
+      for (const comment of video.comments) {
+        const entry = node('div', undefined, 'comment');
+        const meta = node('div', undefined, 'meta');
+        meta.append(node('span', `${date(comment.published_at)} · ${comment.likes} 人点赞`), link('查看原评论 ↗', comment.url));
+        entry.append(node('p', comment.text), meta);
+        card.append(entry);
+      }
+      if (video.comment_status === 'empty') card.append(node('p', '平台未返回可展示的一级评论。', 'muted'));
+      if (video.comment_status === 'unavailable') card.append(node('p', `评论未能获取：${video.comment_error}`, 'notice error'));
+      $('videos').append(card);
+    }
+    $('results').hidden = false;
+  }
+  $('search-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    $('search').disabled = true;
+    $('search').textContent = '正在检索…';
+    $('status').hidden = false;
+    $('status').className = 'notice';
+    $('status').textContent = $('platform').value === 'douyin'
+      ? '正在打开抖音官网搜索窗口，需要时请在该窗口中登录（最多等待 2 分钟）。请保持窗口打开，搜索与评论读取完成后会自动关闭。'
+      : '正在搜索相关视频并读取公开评论，请稍候。平台响应较慢时可能超过一分钟。';
+    $('welcome').hidden = true;
+    $('results').hidden = true;
+    result = null;
+    try {
+      const response = await fetch('/api/search', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ company: $('company').value.trim(), platform: $('platform').value, topic: $('topic').value, limit: Number($('limit').value) })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || '搜索失败，请稍后重试。');
+      result = data;
+      render(data);
+      $('status').hidden = true;
+    } catch (error) {
+      $('status').className = 'notice error';
+      $('status').textContent = error.message === 'Failed to fetch' ? '无法连接本地服务，请确认 python app.py 仍在运行。' : error.message;
+    } finally {
+      $('search').disabled = false;
+      $('search').textContent = '搜索公司口碑 ↗';
+    }
+  });
+  $('download').addEventListener('click', () => {
+    if (!result) return;
+    const url = URL.createObjectURL(new Blob([JSON.stringify(result, null, 2)], { type: 'application/json;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${result.company.replace(/[\\/:*?"<>|]/g, '_')}-求职口碑.json`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+</script>
+</body>
+</html>
